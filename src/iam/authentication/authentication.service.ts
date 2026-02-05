@@ -6,6 +6,8 @@ import { UserDto } from '../../users/dto/user.dto';
 import { Role } from '../login/enums/role.enum';
 import { UserStatus } from '../../users/models/users.model';
 import { HashingService } from '../../common/hashing/hashing.service';
+import { MailerService } from '../../common/mailer/mailer.service';
+import { registrationEmail } from '../../common/mailer/mailer.constants';
 
 @Injectable()
 export class AuthenticationService {
@@ -13,6 +15,7 @@ export class AuthenticationService {
         private readonly usersService: UsersService,
         private readonly loginService: LoginService,
         private readonly hashingService: HashingService,
+        private readonly mailerService: MailerService,
     ) { }
 
     async handleSocialLogin(profile: any) {
@@ -47,6 +50,12 @@ export class AuthenticationService {
 
             try {
                 const createdUser = await this.usersService.create(newUser);
+
+                // Send registration email
+                this.sendMailRegisterUser({ ...newUser, password: password } as any).catch((err: unknown) =>
+                    console.error('Send mail failed but continuing registration', err),
+                );
+
                 user = await this.usersService.findByEmail(createdUser.email);
             } catch (error) {
                 throw new UnauthorizedException('Failed to create user from social login');
@@ -54,5 +63,19 @@ export class AuthenticationService {
         }
 
         return this.loginService.generateTokens(user);
+    }
+
+    private async sendMailRegisterUser(user: any): Promise<void> {
+        try {
+            await this.mailerService.sendMail({
+                to: user.email,
+                from: 'from@example.com',
+                subject: 'Registration successful ✔',
+                html: registrationEmail(user),
+            });
+            console.log('User Registration: Send Mail successfully!');
+        } catch (err: unknown) {
+            console.error('User Registration: Send Mail failed!', err);
+        }
     }
 }

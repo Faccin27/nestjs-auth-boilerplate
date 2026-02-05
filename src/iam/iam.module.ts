@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UtilsModule } from '../common/utils/utils.module';
+import { MailerModule } from '../common/mailer/mailer.module';
 import { UsersModule } from '../users/users.module';
 import { ChangePasswordModule } from './change-password/change-password.module';
 import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
@@ -20,6 +21,7 @@ import { Argon2Service } from '../common/hashing/argon2.service';
     ForgotPasswordModule,
     ChangePasswordModule,
     UtilsModule,
+    MailerModule,
   ],
   controllers: [AuthenticationController],
   providers: [
