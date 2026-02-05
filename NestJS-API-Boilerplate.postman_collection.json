@@ -205,6 +205,47 @@
 						"description": "Altera a senha do usuário (requer autenticação)"
 					},
 					"response": []
+				},
+				{
+					"name": "Discord Auth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/discord",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"discord"
+							]
+						},
+						"description": "Inicia o fluxo de login com Discord"
+					},
+					"response": []
+				},
+				{
+					"name": "Discord Callback",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/discord/callback",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"discord",
+								"callback"
+							]
+						},
+						"description": "Callback do login com Discord (normalmente chamado pelo Discord)"
+					},
+					"response": []
 				}
 			],
 			"description": "Endpoints de autenticação e gerenciamento de usuários"
@@ -397,11 +438,13 @@
 								":userId",
 								"profile"
 							],
-							"variable": [{
-								"key": "userId",
-								"value": "{{userId}}",
-								"description": "ID do usuário"
-							}]
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{userId}}",
+									"description": "ID do usuário"
+								}
+							]
 						},
 						"description": "Atualiza o perfil de um usuário (sem senha)"
 					},
@@ -520,4 +563,3 @@
 		}
 	]
 }
-
