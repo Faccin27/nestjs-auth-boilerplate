@@ -38,4 +38,8 @@ export async function registerFastifyPlugins(app: NestFastifyApplication) {
     retryAfter: 30, // Delay in seconds to retry connecting
     responseServerError: 'true', // Set 503 response
   });
+
+  await app.register(require('@fastify/cookie'), {
+    secret: process.env.JWT_SECRET_KEY, // for cookies signature
+  });
 }

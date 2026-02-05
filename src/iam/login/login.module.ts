@@ -55,5 +55,6 @@ import { provideUsersRepository } from '../../users/repositories/users.repositor
     ...provideUsersRepository(),
   ],
   controllers: [LoginController],
+  exports: [LoginService],
 })
-export class LoginModule {}
+export class LoginModule { }

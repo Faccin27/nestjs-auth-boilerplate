@@ -6,6 +6,11 @@ import { ChangePasswordModule } from './change-password/change-password.module';
 import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
 import { LoginModule } from './login/login.module';
 import { RegisterModule } from './register/register.module';
+import { DiscordStrategy } from './strategies/discord.strategy';
+import { AuthenticationController } from './authentication/authentication.controller';
+import { AuthenticationService } from './authentication/authentication.service';
+import { HashingService } from '../common/hashing/hashing.service';
+import { Argon2Service } from '../common/hashing/argon2.service';
 
 @Module({
   imports: [
@@ -16,6 +21,15 @@ import { RegisterModule } from './register/register.module';
     ChangePasswordModule,
     UtilsModule,
   ],
-  providers: [JwtService],
+  controllers: [AuthenticationController],
+  providers: [
+    {
+      provide: HashingService,
+      useClass: Argon2Service,
+    },
+    JwtService,
+    DiscordStrategy,
+    AuthenticationService,
+  ],
 })
-export class IamModule {}
+export class IamModule { }
